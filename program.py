@@ -25,17 +25,17 @@ NUMBERS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']
 ASCII = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t',\
         'u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O', \
         'P','Q','R','S','T','U','V','W','X','Y','Z']
-FUNCTIONS = {'sin': mt.sin, 'cos': mt.cos, 'tan': mt.tan, 'log': mt.log, '^': Power, '*': Multiply,\
-    '/': Divide, '+': Add, '-': Subtract }
-OPERATORS = {'^': 1, '*': 2, '/':2, '+': 3, '-': 3}
+FUNCTIONS_1ARG = {'sin': mt.sin, 'cos': mt.cos, 'tan': mt.tan, 'exp': mt.exp}
+FUNCTIONS_2ARG = { 'log': mt.log, '^': Power, '*': Multiply, '/': Divide, '+': Add, '-': Subtract}
+OPERATORS = ['^', '*', '/', '+', '-']
 
 def get_number(string, i, length):
-
     number = []
 
     while((string[i] in NUMBERS)):
         number.append(string[i])
         i = i + 1
+
         if(i >= length):
             break
 
@@ -44,12 +44,12 @@ def get_number(string, i, length):
     return number, i - 1
 
 def get_function(string, i, length):
-
     function = []
 
     while((string[i] in ASCII) and (i < length)):
         function.append(string[i])
         i = i + 1
+
         if(i >= length):
             break
 
@@ -57,7 +57,11 @@ def get_function(string, i, length):
     return function, i - 1
 
 def return_function(function):
-    return FUNCTIONS[function]
+    if function in FUNCTIONS_1ARG:
+        return FUNCTIONS_FUNCTIONS_1ARG[function]
+
+    else:
+         return FUNCTIONS_FUNCTIONS_1ARG[function]
 
 def precedence(operator):
     if(operator == '^'):
@@ -97,15 +101,23 @@ while(i < len(user_string)):
         if OPERATOR_STACK:
             while(precedence(user_string[i]) >= precedence(OPERATOR_STACK[-1])):
                 if(OPERATOR_STACK[-1] not in OPERATORS):
-                    a = NUMBER_STACK.pop()
-                    f = FUNCTIONS[OPERATOR_STACK.pop()]
-                    c = Decimal(f(a))
-                    NUMBER_STACK.append(c)
+                    if(OPERATOR_STACK[-1] in FUNCTIONS_1ARG):
+                        a = NUMBER_STACK.pop()
+                        f = FUNCTIONS_1ARG[OPERATOR_STACK.pop()]
+                        c = Decimal(f(a))
+                        NUMBER_STACK.append(c)
+
+                    else:
+                        b = NUMBER_STACK.pop()
+                        a = NUMBER_STACK.pop()
+                        f = FUNCTIONS_2ARG[OPERATOR_STACK.pop()]
+                        c = Decimal(f(a, b))
+                        NUMBER_STACK.append(c)
 
                 else:
                     b = NUMBER_STACK.pop()
                     a = NUMBER_STACK.pop()
-                    f = FUNCTIONS[OPERATOR_STACK.pop()]
+                    f = FUNCTIONS_2ARG[OPERATOR_STACK.pop()]
                     c = Decimal(f(a, b))
                     NUMBER_STACK.append(c)
 
@@ -121,25 +133,33 @@ while(i < len(user_string)):
 
     elif(user_string[i] == ')'):
         while(OPERATOR_STACK[-1] != '('):
-            if(OPERATOR_STACK[-1] in OPERATORS):
+            if(OPERATOR_STACK[-1] in FUNCTIONS_2ARG):
                 b = NUMBER_STACK.pop()
                 a = NUMBER_STACK.pop()
-                f = FUNCTIONS[OPERATOR_STACK.pop()]
+                f = FUNCTIONS_2ARG[OPERATOR_STACK.pop()]
                 c = Decimal(f(a, b))
                 NUMBER_STACK.append(c)
             else:
                 a = NUMBER_STACK.pop()
-                f = FUNCTIONS[OPERATOR_STACK.pop()]
+                f = FUNCTIONS_1ARG[OPERATOR_STACK.pop()]
                 c = Decimal(f(a))
                 NUMBER_STACK.append(c)
 
         OPERATOR_STACK.pop()
         if OPERATOR_STACK:
-            if((OPERATOR_STACK[-1] not in OPERATORS) and (OPERATOR_STACK[-1] in FUNCTIONS)):
+            if((OPERATOR_STACK[-1] not in OPERATORS) and (OPERATOR_STACK[-1] in FUNCTIONS_1ARG)):
                 a = NUMBER_STACK.pop()
-                f = FUNCTIONS[OPERATOR_STACK.pop()]
+                f = FUNCTIONS_1ARG[OPERATOR_STACK.pop()]
                 c = Decimal(f(a))
                 NUMBER_STACK.append(c)
+            elif((OPERATOR_STACK[-1] not in OPERATORS) and (OPERATOR_STACK[-1] in FUNCTIONS_2ARG)):
+                b = NUMBER_STACK.pop()
+                a = NUMBER_STACK.pop()
+                f = FUNCTIONS_2ARG[OPERATOR_STACK.pop()]
+                c = Decimal(f(a, b))
+                NUMBER_STACK.append(c)
+            else:
+                pass
 
         i = i + 1
 
@@ -148,18 +168,17 @@ while(i < len(user_string)):
 
     if(i >= len(user_string)):
         break
-        
+
 while(OPERATOR_STACK):
-    if(OPERATOR_STACK[-1] in OPERATORS):
+    if(OPERATOR_STACK[-1] in FUNCTIONS_2ARG):
         b = NUMBER_STACK.pop()
         a = NUMBER_STACK.pop()
-        f = FUNCTIONS[OPERATOR_STACK.pop()]
+        f = FUNCTIONS_2ARG[OPERATOR_STACK.pop()]
         c = Decimal(f(a, b))
         NUMBER_STACK.append(c)
-
     else:
         a = NUMBER_STACK.pop()
-        f = FUNCTIONS[OPERATOR_STACK.pop()]
+        f = FUNCTIONS_1ARG[OPERATOR_STACK.pop()]
         c = Decimal(f(a))
         NUMBER_STACK.append(c)
 
