@@ -240,7 +240,8 @@ except:
 
 ###################################################
 ## PRINT THE FINAL RESULT AFTER THE OPERATOR STA ##
-## CK EMPTYIED ITS CONTENTS                      ##
+## CK EMPTYIED ITS CONTENTS AND WAIT FOR EXIT    ##
 ###################################################
 
 print(NUMBER_STACK.pop())
+input()
