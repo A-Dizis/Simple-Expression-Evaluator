@@ -1,4 +1,5 @@
 import math as mt
+import sys
 from decimal import Decimal
 
 def Power(num1, num2):
@@ -162,24 +163,33 @@ while(i < len(user_string)):
                 pass
 
         i = i + 1
+    
+    elif(user_string[i] == ','):
+        i = i + 1
 
     else:
         pass
 
     if(i >= len(user_string)):
         break
+try:
+    while(OPERATOR_STACK):
+        if(OPERATOR_STACK[-1] in FUNCTIONS_2ARG):
+            b = NUMBER_STACK.pop()
+            a = NUMBER_STACK.pop()
+            f = FUNCTIONS_2ARG[OPERATOR_STACK.pop()]
+            c = Decimal(f(a, b))
+            NUMBER_STACK.append(c)
 
-while(OPERATOR_STACK):
-    if(OPERATOR_STACK[-1] in FUNCTIONS_2ARG):
-        b = NUMBER_STACK.pop()
-        a = NUMBER_STACK.pop()
-        f = FUNCTIONS_2ARG[OPERATOR_STACK.pop()]
-        c = Decimal(f(a, b))
-        NUMBER_STACK.append(c)
-    else:
-        a = NUMBER_STACK.pop()
-        f = FUNCTIONS_1ARG[OPERATOR_STACK.pop()]
-        c = Decimal(f(a))
-        NUMBER_STACK.append(c)
+        else:
+            a = NUMBER_STACK.pop()
+            f = FUNCTIONS_1ARG[OPERATOR_STACK.pop()]
+            c = Decimal(f(a))
+            NUMBER_STACK.append(c)
+
+except:
+    print("MISALLIGNED PARENTHESES. EXITING...\n")
+    input()
+    sys.exit(-1)
 
 print(NUMBER_STACK.pop())
