@@ -76,10 +76,10 @@ def get_function(string, i, length):
 
 def return_function(function):
     if function in FUNCTIONS_1ARG:
-        return FUNCTIONS_FUNCTIONS_1ARG[function]
+        return FUNCTIONS_1ARG[function]
 
     else:
-         return FUNCTIONS_FUNCTIONS_1ARG[function]
+         return FUNCTIONS_2ARG[function]
 
 ###################################################
 ## FUNCTIONS TO SET THE PRECEDENCE               ##
