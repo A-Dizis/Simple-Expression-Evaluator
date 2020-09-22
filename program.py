@@ -148,18 +148,19 @@ while(i < len(user_string)):
 
     if(i >= len(user_string)):
         break
-try:
-    while(OPERATOR_STACK[-1]):
-        if(OPERATOR_STACK[-1] in OPERATORS):
-            b = NUMBER_STACK.pop()
-            a = NUMBER_STACK.pop()
-            f = FUNCTIONS[OPERATOR_STACK.pop()]
-            c = Decimal(f(a, b))
-            NUMBER_STACK.append(c)
-        else:
-            a = NUMBER_STACK.pop()
-            f = FUNCTIONS[OPERATOR_STACK.pop()]
-            c = Decimal(f(a))
-            NUMBER_STACK.append(c)
-except:
-    print(NUMBER_STACK.pop())
+        
+while(OPERATOR_STACK):
+    if(OPERATOR_STACK[-1] in OPERATORS):
+        b = NUMBER_STACK.pop()
+        a = NUMBER_STACK.pop()
+        f = FUNCTIONS[OPERATOR_STACK.pop()]
+        c = Decimal(f(a, b))
+        NUMBER_STACK.append(c)
+
+    else:
+        a = NUMBER_STACK.pop()
+        f = FUNCTIONS[OPERATOR_STACK.pop()]
+        c = Decimal(f(a))
+        NUMBER_STACK.append(c)
+
+print(NUMBER_STACK.pop())
