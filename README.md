@@ -13,4 +13,4 @@
     a.  (sin(2*3.145159)+2/3-1/3-1/3*(cos(3.14159-0)*1+3)-4)/2 
     b.  (2 *log (100,10) ^ 2 / 8 - 2)*(1+cos( 3.14159* 2) )
 ____________________________________________________________________________________________________________
-__This project is fairly new and I am open set the courses with somebody else who is willing to help. Thanx!!!__
+__This project is fairly new and I am open set the course with somebody else who is willing to help make a nice little tool. Thanx!!!__
